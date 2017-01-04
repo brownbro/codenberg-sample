@@ -13,9 +13,23 @@ class CodenbergClient
     end
   end
 
-  def show_templates
-    response = @conn.get 'templates', {access_token: @access_token}
-    puts response.body
+  def create_order(template_id, postal_code, pref, city, address_line1, name, tel, custom_fields)
+    @conn.post do |req|
+      req.url 'orders'
+      req.headers['Content-Type'] = 'application/json'
+      req.body = {
+        :access_token => @access_token,
+        :template_id => template_id,
+        :confirmation => "false",
+        :postal_code => postal_code,
+        :pref => pref,
+        :city => city,
+        :address_line1 => address_line1,
+        :name => name,
+        :tel => tel,
+        :custom_fields => custom_fields
+      }.to_json
+    end
   end
 
   private
